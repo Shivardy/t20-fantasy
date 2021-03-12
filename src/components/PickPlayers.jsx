@@ -25,9 +25,6 @@ const PickPlayers = ({ selectedGameId }) => {
       (player) => player.isSelected
     );
     setisElevenSelected(selectedPlayersTeam1.length + selectedPlayersTeam2.length >= 11)
-    if(selectedPlayersTeam1.length + selectedPlayersTeam2.length > 11){
-    
-    }
   }, [team1, team2]);
 
   useEffect(() => {
