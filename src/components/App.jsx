@@ -21,7 +21,7 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <MatchView setSelectedGameId = {setSelectedGameId}/>
+      {!selectedGameId && <MatchView setSelectedGameId = {setSelectedGameId}/>}
       {selectedGameId && <PickPlayers selectedGameId = {selectedGameId}/>}
     </Container>
   );
