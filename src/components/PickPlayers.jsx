@@ -3,10 +3,9 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  Snackbar,
+
   Typography
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import { score } from '../constants';
 
@@ -25,7 +24,7 @@ const PickPlayers = ({ selectedGameId }) => {
     const selectedPlayersTeam2 = team2.players.filter(
       (player) => player.isSelected
     );
-    setisElevenSelected(selectedPlayersTeam1.length + selectedPlayersTeam2.length > 11)
+    setisElevenSelected(selectedPlayersTeam1.length + selectedPlayersTeam2.length >= 11)
     if(selectedPlayersTeam1.length + selectedPlayersTeam2.length > 11){
     
     }
@@ -65,11 +64,11 @@ const PickPlayers = ({ selectedGameId }) => {
       >
         Log Selected
       </Button>
-      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+      {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="warning">
           {error}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </>
   );
 };
