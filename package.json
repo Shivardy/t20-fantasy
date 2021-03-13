@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^5.7.0",
-    "firebase-admin": "^6.4.0",
-    "firebase-tools": "^6.1.2",
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
+    "firebase": "^8.3.0",
+    "firebase-admin": "^9.5.0",
+    "firebase-tools": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-scripts": "^2.1.5"
@@ -16,7 +16,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"

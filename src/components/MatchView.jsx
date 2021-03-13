@@ -8,12 +8,23 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { matches } from '../constants';
+import { firestore } from '../firebase';
+
 
 const MatchView = ({setSelectedGameId}) => {
   const isIndia = (str) => str.toLowerCase().includes('india');
   const isT20 = (str) => str.toLowerCase().includes('twenty20');
+
+  useEffect(async () => {
+    const matches = await firestore.collection('matches').get();
+    matches.forEach(doc => {
+      const data = doc.data();
+      console.log(data, doc);
+    })
+    console.log(matches);
+  }, [])
 
   const indiaMatches = matches.matches
     .filter((match) => isT20(match.type))
