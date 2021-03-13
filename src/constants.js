@@ -3305,3 +3305,41 @@ export const score = {
     "pubDate": "2021-03-12T16:55:49.902Z"
   }
 }
+
+export const grading = {
+  batting: {
+    run: 1,
+    four: 1,
+    six: 2,
+    halfCentury: 4,
+    century: 8,
+    duckOut: -2
+  },
+  bowling: {
+    wicket: 10,
+    fourWicket: 4,
+    fiveWicket: 8,
+    maiden: 4
+  },
+  fielding: {
+    catches: 4,
+    stumping: 6,
+    runOut: 4
+  },
+  economy: { //only applies if bowled atleast 2 overs
+    below4: 3,
+    between4To5: 2,
+    between5to6: 1,
+    between9To10: -1,
+    between10To11: -2,
+    above11: -3,
+  },
+  strikeRate: { //only applies if faced atleast 10 bowls
+    below50: -3,
+    between50To60: -2,
+    between60To70: -1,
+    between100To120: 1,
+    between120To140: 2,
+    above140: 3,
+  }
+}

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { score } from '../constants';
 import ListPlayers from './ListPlayers';
 
-const PickPlayers = ({ selectedGameId, setTitle, setPlaying11 }) => {
+const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
   const [team1, setTeam1] = useState(score.data.team[0]);
   const [team2, setTeam2] = useState(score.data.team[1]);
 
@@ -12,13 +12,18 @@ const PickPlayers = ({ selectedGameId, setTitle, setPlaying11 }) => {
   const [isViceCaptainSelected, setIsViceCaptainSelected] = useState(false);
 
   useEffect(() => {
+    setScore(score);
+  }, [])
+
+  useEffect(() => {
     setTitle('T20 Fantasy - Pick Your Playing 11');
+    return () => setTitle('T20 Fantasy');
   }, []);
 
   useEffect(() => {
     const players = [...team1.players, ...team2.players];
     const selectedPlayers = players.filter((p) => p.isSelected);
-    setisElevenSelected(selectedPlayers.length >= 5);
+    setisElevenSelected(selectedPlayers.length >= 11);
     setIsCaptainSelected(!!players.find((p) => p.isCaptain));
     setIsViceCaptainSelected(!!players.find((p) => p.isViceCaptain));
   }, [team1, team2]);

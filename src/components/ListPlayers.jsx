@@ -58,7 +58,7 @@ const ListPlayers = ({
                     <Box display="flex">
                       <Box mr={1}>
                         <Fab
-                          disabled={!player.isCaptain && isCaptainSelected}
+                          disabled={(!player.isCaptain && isCaptainSelected) || player.isViceCaptain}
                           size="small"
                           color="primary"
                           onClick={() => handleCaptainSelected(index)}
@@ -69,7 +69,7 @@ const ListPlayers = ({
                       <Box ml={1}>
                         <Fab
                           disabled={
-                            !player.isViceCaptain && isViceCaptainSelected
+                            (!player.isViceCaptain && isViceCaptainSelected) || player.isCaptain
                           }
                           size="small"
                           color="primary"
