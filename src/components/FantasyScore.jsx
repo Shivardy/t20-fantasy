@@ -181,7 +181,7 @@ const FantasyScore = ({ score, playing11, setTitle }) => {
   useEffect(() => {
     setTitle('T20 Fantasy - Your Team');
     return () => setTitle('T20 Fantasy');
-  }, []);
+  }, [setTitle]);
 
   return (
     <>
@@ -217,7 +217,7 @@ const FantasyScore = ({ score, playing11, setTitle }) => {
               </TableCell>
               <TableCell align="right">
                 <Typography variant="h5" gutterBottom>
-                  {playing11.map(({score}) => score).reduce((score, acc)=> score+ acc)}
+                  {playing11.map(({score}) => score || 0).reduce((score, acc)=> score+ acc)}
                 </Typography>
               </TableCell>
             </TableRow>

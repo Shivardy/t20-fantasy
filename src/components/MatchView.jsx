@@ -10,20 +10,28 @@ import {
 } from '@material-ui/core';
 import React, { useEffect } from 'react';
 import { matches } from '../constants';
-import { firestore } from '../firebase';
 
 
 const MatchView = ({setSelectedGameId}) => {
   const isIndia = (str) => str.toLowerCase().includes('india');
   const isT20 = (str) => str.toLowerCase().includes('twenty20');
+  
 
-  useEffect(async () => {
-    const matches = await firestore.collection('matches').get();
-    matches.forEach(doc => {
-      const data = doc.data();
-      console.log(data, doc);
-    })
-    console.log(matches);
+  const fetchMatches = async () => {
+    const response = await fetch(`https://cricapi.com/api/matches?apikey=${process.env.REACT_APP_API_KEY}`);
+    const data = await response.json();
+    return data;
+  }
+
+  useEffect(() => {
+    // const matches = await firestore.collection('matches').get();
+    // matches.forEach(doc => {
+    //   const data = doc.data();
+    //   console.log(data, doc);
+    // })
+    // console.log(matches);
+    // console.log(process.env);
+    // fetchMatches();
   }, [])
 
   const indiaMatches = matches.matches

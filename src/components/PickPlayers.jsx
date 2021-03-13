@@ -13,12 +13,12 @@ const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
 
   useEffect(() => {
     setScore(score);
-  }, [])
+  }, [setScore])
 
   useEffect(() => {
     setTitle('T20 Fantasy - Pick Your Playing 11');
     return () => setTitle('T20 Fantasy');
-  }, []);
+  }, [setTitle]);
 
   useEffect(() => {
     const players = [...team1.players, ...team2.players];

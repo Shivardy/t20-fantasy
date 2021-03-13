@@ -10,7 +10,7 @@
     "firebase-tools": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "^2.1.5"
+    "react-scripts": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
