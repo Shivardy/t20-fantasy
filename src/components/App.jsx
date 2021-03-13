@@ -11,7 +11,7 @@ function App() {
   const [score, setScore] = useState(null);
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <AppBar position="sticky">
         <Toolbar>
           <Typography

@@ -19,6 +19,8 @@ const ListPlayers = ({
 }) => {
   const handlePlayerSelected = (index) => {
     team.players[index].isSelected = !team.players[index].isSelected;
+    if(team.players[index].isCaptain) team.players[index].isCaptain = false;
+    if(team.players[index].isViceCaptain) team.players[index].isViceCaptain = false;
     setTeam({ ...team });
   };
   const handleCaptainSelected = (index) => {

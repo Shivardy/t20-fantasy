@@ -23,7 +23,7 @@ const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
   useEffect(() => {
     const players = [...team1.players, ...team2.players];
     const selectedPlayers = players.filter((p) => p.isSelected);
-    setisElevenSelected(selectedPlayers.length >= 11);
+    setisElevenSelected(selectedPlayers.length >= 3);
     setIsCaptainSelected(!!players.find((p) => p.isCaptain));
     setIsViceCaptainSelected(!!players.find((p) => p.isViceCaptain));
   }, [team1, team2]);
