@@ -46,6 +46,7 @@ const PickPlayers = ({ matchId, setTitle, setPlaying11, setScore }) => {
   if(status === 'error') return <div>Error..</div>
 
   console.log(team1, team2);
+  if(!team1.players.length || !team2.players.length) return <div>Players data not avaialble. Try again alter.</div>
   return (
     <>
       <Grid container spacing={2} justify="center">

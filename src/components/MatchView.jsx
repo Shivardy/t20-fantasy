@@ -21,9 +21,9 @@ const MatchView = ({ setMatchId }) => {
   if(status === 'loading') return <div>Loading..</div>
   if(status === 'error') return <div>Error..</div>
 
-  const indiaMatches = data.matches
-    .filter((match) => isT20(match.type))
-    .filter((match) => isIndia(match['team-1']) || isIndia(match['team-1']));
+  const indiaMatches = data.matches;
+    // .filter((match) => isT20(match.type))
+    // .filter((match) => isIndia(match['team-1']) || isIndia(match['team-1']));
 
   return (
     <TableContainer component={Paper}>
