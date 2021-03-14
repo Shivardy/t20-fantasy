@@ -14,17 +14,12 @@ import { fetchMatchData } from '../api';
 // import { matches } from '../constants';
 
 const MatchView = ({ setMatchId }) => {
-  const isIndia = (str) => str.toLowerCase().includes('india');
-  const isT20 = (str) => str.toLowerCase().includes('twenty20');
   const {status, data} = useQuery('fetchMatchData', fetchMatchData);
 
   if(status === 'loading') return <div>Loading..</div>
   if(status === 'error') return <div>Error..</div>
 
   const indiaMatches = data.matches;
-    // .filter((match) => isT20(match.type))
-    // .filter((match) => isIndia(match['team-1']) || isIndia(match['team-1']));
-
   return (
     <TableContainer component={Paper}>
       <Table>
