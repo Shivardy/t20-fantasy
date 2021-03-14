@@ -8,31 +8,19 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useQuery } from 'react-query';
+import { fetchMatchData } from '../api';
 import { matches } from '../constants';
 
-
-const MatchView = ({setSelectedGameId}) => {
+const MatchView = ({ setSelectedGameId }) => {
   const isIndia = (str) => str.toLowerCase().includes('india');
   const isT20 = (str) => str.toLowerCase().includes('twenty20');
-  
+  const {status, data, error} = useQuery('fetchMatchData', fetchMatchData);
 
-  const fetchMatches = async () => {
-    const response = await fetch(`https://cricapi.com/api/matches?apikey=${process.env.REACT_APP_API_KEY}`);
-    const data = await response.json();
-    return data;
-  }
-
-  useEffect(() => {
-    // const matches = await firestore.collection('matches').get();
-    // matches.forEach(doc => {
-    //   const data = doc.data();
-    //   console.log(data, doc);
-    // })
-    // console.log(matches);
-    // console.log(process.env);
-    // fetchMatches();
-  }, [])
+  console.log(status, data, error);
+  if(status === 'loading') return <div>Loading..</div>
+  if(status === 'error') return <div>Error..</div>
 
   const indiaMatches = matches.matches
     .filter((match) => isT20(match.type))
@@ -56,7 +44,11 @@ const MatchView = ({setSelectedGameId}) => {
 
               <TableCell align="right">
                 {match.matchStarted && (
-                  <Button variant="contained" color="primary" onClick={() => setSelectedGameId(match.unique_id)}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setSelectedGameId(match.unique_id)}
+                  >
                     Play Fantasy
                   </Button>
                 )}
