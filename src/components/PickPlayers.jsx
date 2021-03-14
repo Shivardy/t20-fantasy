@@ -1,19 +1,27 @@
 import { Box, Button, Grid } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { score } from '../constants';
+import { useQuery } from 'react-query';
+import { fetchFantasySummaryData } from '../api';
 import ListPlayers from './ListPlayers';
 
-const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
-  const [team1, setTeam1] = useState(score.data.team[0]);
-  const [team2, setTeam2] = useState(score.data.team[1]);
+const PickPlayers = ({ matchId, setTitle, setPlaying11, setScore }) => {
+  const [team1, setTeam1] = useState(null);
+  const [team2, setTeam2] = useState(null);
 
   const [isElevenSelected, setisElevenSelected] = useState(false);
   const [isCaptainSelected, setIsCaptainSelected] = useState(false);
   const [isViceCaptainSelected, setIsViceCaptainSelected] = useState(false);
+  const {status, data} = useQuery(`${matchId}`, fetchFantasySummaryData);
+
 
   useEffect(() => {
-    setScore(score);
-  }, [setScore])
+    if(status ==='success'){
+      setScore(data);
+      setTeam1(data.data.team[0]);
+      setTeam2(data.data.team[1]);
+    }
+  }, [setScore, setTeam1, setTeam2, status, data])
+  
 
   useEffect(() => {
     setTitle('T20 Fantasy - Pick Your Playing 11');
@@ -21,6 +29,7 @@ const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
   }, [setTitle]);
 
   useEffect(() => {
+    if(!(team1 || team2)) return;
     const players = [...team1.players, ...team2.players];
     const selectedPlayers = players.filter((p) => p.isSelected);
     setisElevenSelected(selectedPlayers.length >= 11);
@@ -33,6 +42,10 @@ const PickPlayers = ({ selectedGameId, setTitle, setPlaying11, setScore }) => {
     setPlaying11(players.filter((p) => p.isSelected));
   };
 
+  if(status === 'loading' || !(team1 || team2)) return <div>Loading..</div>
+  if(status === 'error') return <div>Error..</div>
+
+  console.log(team1, team2);
   return (
     <>
       <Grid container spacing={2} justify="center">

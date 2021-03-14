@@ -42,17 +42,25 @@ const fetchFantasySummary = async (matchId) => {
   return { matchId, ...data };
 };
 
-export const fetchFantasySummaryData = async (matchId) => {
+export const fetchFantasySummaryData = async (queryParam) => {
+  const { queryKey: [matchId] } = queryParam;
   const matchesSnapshot = await firestore.collection('fantasySummary').get();
-  let [data] = matchesSnapshot.docs.map((doc) => ({
+  let data = matchesSnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
-  })).find((data) => data.matchId === matchId);
-
+  }));
   if (!data) {
     // if no data pull it from api
+    console.log("No data available: pulling data 1st time");
     data = await fetchFantasySummary(matchId);
     await firestore.collection('fantasySummary').add(data);
+  } else if (data.length) {
+    data = data.find((match) => match.matchId === matchId);
+    if (!data) {
+      console.log("Data Exists but not for this game so pulling");
+      data = await fetchFantasySummary(matchId);
+      await firestore.collection('fantasySummary').add(data);
+    }
   }
   const {
     provider: { pubDate },

@@ -11,18 +11,17 @@ import {
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchMatchData } from '../api';
-import { matches } from '../constants';
+// import { matches } from '../constants';
 
-const MatchView = ({ setSelectedGameId }) => {
+const MatchView = ({ setMatchId }) => {
   const isIndia = (str) => str.toLowerCase().includes('india');
   const isT20 = (str) => str.toLowerCase().includes('twenty20');
-  const {status, data, error} = useQuery('fetchMatchData', fetchMatchData);
+  const {status, data} = useQuery('fetchMatchData', fetchMatchData);
 
-  console.log(status, data, error);
   if(status === 'loading') return <div>Loading..</div>
   if(status === 'error') return <div>Error..</div>
 
-  const indiaMatches = matches.matches
+  const indiaMatches = data.matches
     .filter((match) => isT20(match.type))
     .filter((match) => isIndia(match['team-1']) || isIndia(match['team-1']));
 
@@ -47,7 +46,7 @@ const MatchView = ({ setSelectedGameId }) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => setSelectedGameId(match.unique_id)}
+                    onClick={() => setMatchId(match.unique_id)}
                   >
                     Play Fantasy
                   </Button>
