@@ -18,11 +18,20 @@ import { grading } from '../constants';
 const FantasyScore = ({ score, playing11, setTitle }) => {
   const {
     data: {
-      fielding: [{ scores: fieldingTeam1 }, { scores: fieldingTeam2 }],
-      bowling: [{ scores: bowlingTeam1 }, { scores: bowlingTeam2 }],
-      batting: [{ scores: battingTeam1 }, { scores: battingTeam2 }],
-    },
-  } = score;
+      fielding: [{ scores: fieldingTeam1 }, { scores: fieldingTeam2 }] = [
+        { scores: [] },
+        { scores: [] },
+      ],
+      bowling: [{ scores: bowlingTeam1 }, { scores: bowlingTeam2 }] = [
+        { scores: [] },
+        { scores: [] },
+      ],
+      batting: [{ scores: battingTeam1 }, { scores: battingTeam2 }] = [
+        { scores: [] },
+        { scores: [] },
+      ],
+    } = { fielding: [], bowling: [], batting: [] },
+  } = score || {};
 
   const fieldingScores = [...fieldingTeam1, ...fieldingTeam2];
   const bowlingScores = [...bowlingTeam1, ...bowlingTeam2];
@@ -217,7 +226,9 @@ const FantasyScore = ({ score, playing11, setTitle }) => {
               </TableCell>
               <TableCell align="right">
                 <Typography variant="h5" gutterBottom>
-                  {playing11.map(({score}) => score || 0).reduce((score, acc)=> score+ acc)}
+                  {playing11
+                    .map(({ score }) => score || 0)
+                    .reduce((score, acc) => score + acc)}
                 </Typography>
               </TableCell>
             </TableRow>

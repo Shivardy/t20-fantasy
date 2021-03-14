@@ -45,7 +45,6 @@ const PickPlayers = ({ matchId, setTitle, setPlaying11, setScore }) => {
   if(status === 'loading' || !(team1 || team2)) return <div>Loading..</div>
   if(status === 'error') return <div>Error..</div>
 
-  console.log(team1, team2);
   if(!team1.players.length || !team2.players.length) return <div>Players data not avaialble. Try again alter.</div>
   return (
     <>
