@@ -14,38 +14,12 @@ import {
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import React, { useEffect, useState } from 'react';
-import {
-  attachScores,
-  calculateBattingScore,
-  calculateBowlingScore,
-  calculateCaptainsScore,
-  calculateEconomyScore,
-  calculateFieldingScore,
-  calculateStrikeRateScore
-} from '../utils';
+import { calculateScores } from '../utils';
 
 const FantasyScore = ({ score, playing11, setTitle }) => {
-  const {
-    data: { fielding, bowling, batting },
-  } = score || { data: { fielding: [], bowling: [], batting: [] } };
+  const players = calculateScores(score, playing11);
 
-  const getScores = (data) =>
-    data
-      .map(({ scores }) => scores)
-      .reduce((score, acc) => [...acc, ...score], []);
-
-  const scores = [getScores(batting), getScores(bowling), getScores(fielding)];
-
-  playing11 = playing11
-    .map((player) => attachScores(player, scores))
-    .map(calculateBattingScore)
-    .map(calculateBowlingScore)
-    .map(calculateFieldingScore)
-    .map(calculateEconomyScore)
-    .map(calculateStrikeRateScore)
-    .map(calculateCaptainsScore);
-
-  console.log(playing11);
+  console.log(players);
   useEffect(() => {
     setTitle('T20 Fantasy - Your Team');
     return () => setTitle('T20 Fantasy');
@@ -71,7 +45,7 @@ const FantasyScore = ({ score, playing11, setTitle }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {playing11.map((player) => (
+            {players.map((player) => (
               <Row player={player} key={player.pid} />
             ))}
           </TableBody>
@@ -85,7 +59,7 @@ const FantasyScore = ({ score, playing11, setTitle }) => {
               </TableCell>
               <TableCell align="right">
                 <Typography variant="h5" gutterBottom>
-                  {playing11
+                  {players
                     .map(({ score }) => score || 0)
                     .reduce((score, acc) => score + acc)}
                 </Typography>

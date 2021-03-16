@@ -1,19 +1,42 @@
 import { grading } from './constants';
 
-export const attachScores = (player, scores) => {
-  const [battingScores, bowlingScores, fieldingScores] = scores;
-  const fielding = fieldingScores.find(({ pid }) => pid === player.pid);
-  const bowling = bowlingScores.find(({ pid }) => pid === player.pid);
-  const batting = battingScores.find(({ pid }) => pid === player.pid);
-  return {
-    ...player,
-    fielding,
-    bowling,
-    batting,
+export const calculateScores = (score, playing11) => {
+  const {
+    data: { fielding, bowling, batting },
+  } = score || { data: { fielding: [], bowling: [], batting: [] } };
+
+  const getScores = (data) =>
+    data
+      .map(({ scores }) => scores)
+      .reduce((score, acc) => [...acc, ...score], []);
+
+  const battingScores = getScores(batting);
+  const bowlingScores = getScores(bowling);
+  const fieldingScores = getScores(fielding);
+
+  const attachScores = (player, scores) => {
+    const fielding = fieldingScores.find(({ pid }) => pid === player.pid);
+    const bowling = bowlingScores.find(({ pid }) => pid === player.pid);
+    const batting = battingScores.find(({ pid }) => pid === player.pid);
+    return {
+      ...player,
+      fielding,
+      bowling,
+      batting,
+    };
   };
+
+  return playing11
+    .map(attachScores)
+    .map(calculateBattingScore)
+    .map(calculateBowlingScore)
+    .map(calculateFieldingScore)
+    .map(calculateEconomyScore)
+    .map(calculateStrikeRateScore)
+    .map(calculateCaptainsScore);
 };
 
-export const calculateBattingScore = (player) => {
+const calculateBattingScore = (player) => {
   const {
     batting: { run, four, six, duckOut, halfCentury, century },
   } = grading;
@@ -35,7 +58,7 @@ export const calculateBattingScore = (player) => {
   return player;
 };
 
-export const calculateBowlingScore = (player) => {
+const calculateBowlingScore = (player) => {
   const {
     bowling: { wicket, fourWicket, fiveWicket, maiden },
   } = grading;
@@ -54,7 +77,7 @@ export const calculateBowlingScore = (player) => {
   return player;
 };
 
-export const calculateFieldingScore = (player) => {
+const calculateFieldingScore = (player) => {
   const {
     fielding: { runOut, stumping, catches },
   } = grading;
@@ -67,14 +90,13 @@ export const calculateFieldingScore = (player) => {
     player.noRunOuts = noRunOuts;
     player.noStumpings = noStumpings;
     let score = player.score || 0;
-    score +=
-      noCatches * catches + noRunOuts * runOut + noStumpings * stumping;
+    score += noCatches * catches + noRunOuts * runOut + noStumpings * stumping;
     player.score = score;
   }
   return player;
 };
 
-export const calculateEconomyScore = (player) => {
+const calculateEconomyScore = (player) => {
   const {
     economy: {
       above11,
@@ -105,7 +127,7 @@ export const calculateEconomyScore = (player) => {
   return player;
 };
 
-export const calculateStrikeRateScore = (player) => {
+const calculateStrikeRateScore = (player) => {
   const {
     strikeRate: {
       above140,
@@ -135,7 +157,7 @@ export const calculateStrikeRateScore = (player) => {
   return player;
 };
 
-export const calculateCaptainsScore = (player) => {
+const calculateCaptainsScore = (player) => {
   if (player.isCaptain) player.score *= 2;
   if (player.isViceCaptain) player.score *= 1.5;
   return player;
