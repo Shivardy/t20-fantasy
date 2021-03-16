@@ -1,7 +1,5 @@
-
 import {
   Box,
-
   Checkbox,
   Fab,
   FormControlLabel,
@@ -19,8 +17,9 @@ const ListPlayers = ({
 }) => {
   const handlePlayerSelected = (index) => {
     team.players[index].isSelected = !team.players[index].isSelected;
-    if(team.players[index].isCaptain) team.players[index].isCaptain = false;
-    if(team.players[index].isViceCaptain) team.players[index].isViceCaptain = false;
+    if (team.players[index].isCaptain) team.players[index].isCaptain = false;
+    if (team.players[index].isViceCaptain)
+      team.players[index].isViceCaptain = false;
     setTeam({ ...team });
   };
   const handleCaptainSelected = (index) => {
@@ -60,24 +59,28 @@ const ListPlayers = ({
                     <Box display="flex">
                       <Box mr={1}>
                         <Fab
-                          disabled={(!player.isCaptain && isCaptainSelected) || player.isViceCaptain}
+                          disabled={
+                            (!player.isCaptain && isCaptainSelected) ||
+                            player.isViceCaptain
+                          }
                           size="small"
                           color="primary"
                           onClick={() => handleCaptainSelected(index)}
                         >
-                          C
+                          {(player.isCaptain && isCaptainSelected) ? '2x' : 'C'}
                         </Fab>
                       </Box>
                       <Box ml={1}>
                         <Fab
                           disabled={
-                            (!player.isViceCaptain && isViceCaptainSelected) || player.isCaptain
+                            (!player.isViceCaptain && isViceCaptainSelected) ||
+                            player.isCaptain
                           }
                           size="small"
                           color="primary"
                           onClick={() => handleViceCaptainSelected(index)}
                         >
-                          Vc
+                          {(player.isViceCaptain && isViceCaptainSelected) ? '1.5x' : 'VC'}
                         </Fab>
                       </Box>
                     </Box>

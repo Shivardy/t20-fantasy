@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "latest",
     "@material-ui/icons": "latest",
+    "@reach/router": "latest",
     "firebase": "^8.3.0",
     "firebase-admin": "^9.5.0",
     "firebase-functions": "^3.13.2",

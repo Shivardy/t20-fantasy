@@ -13,18 +13,24 @@ import {
 } from '@material-ui/core';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import React, { useEffect, useState } from 'react';
+import { Redirect, useLocation } from '@reach/router';
+import React, { useContext, useEffect, useState } from 'react';
 import { calculateScores } from '../utils';
+import { Context } from './App';
 
-const FantasyScore = ({ score, playing11, setTitle }) => {
-  const players = calculateScores(score, playing11);
+const FantasyScore = () => {
+  const { setTitle } = useContext(Context);
+  const { state } = useLocation();
 
-  console.log(players);
   useEffect(() => {
     setTitle('T20 Fantasy - Your Team');
     return () => setTitle('T20 Fantasy');
   }, [setTitle]);
 
+  if (!state) return <Redirect to="/" noThrow />;
+
+  const { score, playing11 } = state;
+  const players = calculateScores(score, playing11);
   return (
     <>
       <TableContainer>

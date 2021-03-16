@@ -8,16 +8,16 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
+import { Link } from '@reach/router';
 import React from 'react';
 import { useQuery } from 'react-query';
 import { fetchMatchData } from '../api';
-// import { matches } from '../constants';
 
-const MatchView = ({ setMatchId }) => {
-  const {status, data} = useQuery('fetchMatchData', fetchMatchData);
+const MatchView = () => {
+  const { status, data } = useQuery('fetchMatchData', fetchMatchData);
 
-  if(status === 'loading') return <div>Loading..</div>
-  if(status === 'error') return <div>Error..</div>
+  if (status === 'loading') return <div>Loading..</div>;
+  if (status === 'error') return <div>Error..</div>;
 
   const indiaMatches = data.matches;
   return (
@@ -38,13 +38,11 @@ const MatchView = ({ setMatchId }) => {
 
               <TableCell align="right">
                 {match.matchStarted && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setMatchId(match.unique_id)}
-                  >
-                    Play Fantasy
-                  </Button>
+                  <Link to={`/match/${match.unique_id}`}>
+                    <Button variant="contained" color="primary">
+                      Play Fantasy
+                    </Button>
+                  </Link>
                 )}
               </TableCell>
             </TableRow>
