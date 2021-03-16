@@ -11,6 +11,10 @@ function App() {
   const [playing11, setPlaying11] = useState([]);
   const [score, setScore] = useState(null);
   const queryClient = new QueryClient();
+
+  // useEffect(() => {
+  //   const temp = auth.onAuthStateChanged(user => console.log(user));
+  // }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <Container maxWidth="lg">

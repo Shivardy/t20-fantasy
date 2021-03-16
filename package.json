@@ -7,11 +7,12 @@
     "@material-ui/icons": "latest",
     "firebase": "^8.3.0",
     "firebase-admin": "^9.5.0",
+    "firebase-functions": "^3.13.2",
     "firebase-tools": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-scripts": "latest",
-    "react-query": "latest"
+    "react-query": "latest",
+    "react-scripts": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
