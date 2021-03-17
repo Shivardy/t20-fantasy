@@ -8,12 +8,17 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import { Link } from '@reach/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 import { fetchMatchData } from '../api';
+import { Context } from './App';
 
 const MatchView = () => {
+    const {
+    state: { user },
+  } = useContext(Context);
+
   const { status, data } = useQuery('fetchMatchData', fetchMatchData);
 
   if (status === 'loading') return <div>Loading..</div>;
@@ -37,7 +42,7 @@ const MatchView = () => {
               </TableCell>
 
               <TableCell align="right">
-                {match.matchStarted && (
+                {user && match.matchStarted && (
                   <Link to={`/match/${match.unique_id}`}>
                     <Button variant="contained" color="primary">
                       Play Fantasy

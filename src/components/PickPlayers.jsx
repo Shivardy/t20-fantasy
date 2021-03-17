@@ -1,13 +1,13 @@
 import { Box, Button, Grid } from '@material-ui/core';
-import { Link, useParams } from '@reach/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { Link, useParams } from 'react-router-dom';
 import { fetchFantasySummaryData } from '../api';
 import { Context } from './App';
 import ListPlayers from './ListPlayers';
 
 const PickPlayers = () => {
-  const { setTitle } = useContext(Context);
+  const { dispatch } = useContext(Context);
 
   const { id } = useParams();
 
@@ -27,9 +27,9 @@ const PickPlayers = () => {
   }, [setTeam1, setTeam2, status, data]);
 
   useEffect(() => {
-    setTitle('T20 Fantasy - Pick Your Playing 11');
-    return () => setTitle('T20 Fantasy');
-  }, [setTitle]);
+    dispatch({ type: 'title', title: 'T20 Fantasy - Pick Your Playing 11' });
+    return () => dispatch({ type: 'title', title: 'T20 Fantasy' });
+  }, [dispatch]);
 
   useEffect(() => {
     if (!(team1 || team2)) return;
@@ -71,7 +71,15 @@ const PickPlayers = () => {
         </Grid>
       </Grid>
       <Box mt={2} mb={2}>
-        <Link to="score" state={{ score: data, playing11: getPlaying11() }}>
+        <Link
+          to={{
+            pathname: '/score',
+            state: {
+              score: data,
+              playing11: getPlaying11(),
+            },
+          }}
+        >
           <Button
             disabled={
               !(isElevenSelected && isCaptainSelected && isViceCaptainSelected)

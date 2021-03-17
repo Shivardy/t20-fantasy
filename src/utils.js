@@ -162,3 +162,17 @@ const calculateCaptainsScore = (player) => {
   if (player.isViceCaptain) player.score *= 1.5;
   return player;
 };
+
+
+export const initialState = { title: 'T20 Fantasy', user: null };
+
+export const reducer = (state, action) => {
+  switch (action.type) {
+    case 'title':
+      return { ...state, title: action.title };
+    case 'user':
+      return { ...state, user: action.user };
+    default:
+      return state;
+  }
+}
