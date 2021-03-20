@@ -27,8 +27,8 @@ const PickPlayers = () => {
   }, [setTeam1, setTeam2, status, data]);
 
   useEffect(() => {
-    dispatch({ type: 'title', title: 'T20 Fantasy - Pick Your Playing 11' });
-    return () => dispatch({ type: 'title', title: 'T20 Fantasy' });
+    dispatch({ type: 'title', title: 'Fantasy Cricket - Pick Your Playing 11' });
+    return () => dispatch({ type: 'title', title: 'Fantasy Cricket' });
   }, [dispatch]);
 
   useEffect(() => {

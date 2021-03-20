@@ -23,8 +23,8 @@ const FantasyScore = () => {
   const { state } = useLocation();
 
   useEffect(() => {
-    dispatch({type:'title', title: 'T20 Fantasy - Your Team'});
-    return () => dispatch({type:'title', title: 'T20 Fantasy'});
+    dispatch({type:'title', title: 'Fantasy Cricket - Your Team'});
+    return () => dispatch({type:'title', title: 'Fantasy Cricket'});
   }, [dispatch]);
 
   if (!state) return <Redirect to="/" noThrow />;

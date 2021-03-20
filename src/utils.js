@@ -164,7 +164,7 @@ const calculateCaptainsScore = (player) => {
 };
 
 
-export const initialState = { title: 'T20 Fantasy', user: null };
+export const initialState = { title: 'Fantasy Cricket', user: null };
 
 export const reducer = (state, action) => {
   switch (action.type) {
