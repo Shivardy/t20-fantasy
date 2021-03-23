@@ -12,9 +12,10 @@ import {
   Typography
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { auth, signInWithGoogle } from '../firebase';
 import { Context } from './App';
+import CreateRoom from './CreateRoom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,20 +31,22 @@ const useStyles = makeStyles((theme) => ({
 
 const MenuBar = () => {
   const {
-    state: { title, user },
+    state: { title, user, isCreateRoomOpen },
+    dispatch
   } = useContext(Context);
 
   const classes = useStyles();
 
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
-
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+  
   const handleToggle = () => setOpen((prevOpen) => !prevOpen);
 
   return (
+    <>
     <AppBar position="sticky">
       <Toolbar>
-        <Typography variant="h4" className={classes.title}>
+        <Typography variant="h4" className={classes.title} onClick={console.log}>
           {title}
         </Typography>
 
@@ -70,6 +73,7 @@ const MenuBar = () => {
                 <ClickAwayListener onClickAway={handleToggle}>
                   <MenuList autoFocusItem={open} id="menu-list-grow">
                     <MenuItem onClick={() => auth.signOut()}>Logout</MenuItem>
+                    <MenuItem onClick={() => dispatch({type:'toggleCreateRoom'})}>Create Room</MenuItem>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
@@ -87,6 +91,8 @@ const MenuBar = () => {
         )}
       </Toolbar>
     </AppBar>
+  {isCreateRoomOpen && <CreateRoom/>}
+  </>
   );
 };
 

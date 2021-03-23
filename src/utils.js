@@ -1,8 +1,9 @@
-import { grading } from './constants';
+import { odiGrading, t20grading } from './constants';
 
 export const calculateScores = (score, playing11) => {
   const {
     data: { fielding, bowling, batting },
+    type,
   } = score || { data: { fielding: [], bowling: [], batting: [] } };
 
   const getScores = (data) =>
@@ -23,6 +24,7 @@ export const calculateScores = (score, playing11) => {
       fielding,
       bowling,
       batting,
+      type,
     };
   };
 
@@ -36,11 +38,13 @@ export const calculateScores = (score, playing11) => {
     .map(calculateCaptainsScore);
 };
 
+const getGrading = (type) => (type === 'ODI' ? odiGrading : t20grading);
+
 const calculateBattingScore = (player) => {
+  const { batting, type } = player;
   const {
     batting: { run, four, six, duckOut, halfCentury, century },
-  } = grading;
-  const { batting } = player;
+  } = getGrading(type);
   if (batting) {
     const runs = batting['R'];
     const fours = batting['4s'];
@@ -59,10 +63,10 @@ const calculateBattingScore = (player) => {
 };
 
 const calculateBowlingScore = (player) => {
+  const { bowling, type } = player;
   const {
     bowling: { wicket, fourWicket, fiveWicket, maiden },
-  } = grading;
-  const { bowling } = player;
+  } = getGrading(type);
   if (bowling) {
     const noWickets = bowling['W'];
     const noMaidens = bowling['M'];
@@ -78,10 +82,10 @@ const calculateBowlingScore = (player) => {
 };
 
 const calculateFieldingScore = (player) => {
+  const { fielding, type } = player;
   const {
     fielding: { runOut, stumping, catches },
-  } = grading;
-  const { fielding } = player;
+  } = getGrading(type);
   if (fielding) {
     const noCatches = fielding['catch'];
     const noRunOuts = fielding['runout'];
@@ -96,7 +100,8 @@ const calculateFieldingScore = (player) => {
   return player;
 };
 
-const calculateEconomyScore = (player) => {
+const calculateT20EconomyScore = (player) => {
+  const { bowling } = player;
   const {
     economy: {
       above11,
@@ -106,8 +111,7 @@ const calculateEconomyScore = (player) => {
       between5to6,
       between9To10,
     },
-  } = grading;
-  const { bowling } = player;
+  } = t20grading;
   if (bowling) {
     const overs = bowling['O'];
     if (overs >= 2) {
@@ -127,7 +131,44 @@ const calculateEconomyScore = (player) => {
   return player;
 };
 
+const calculateODIEconomyScore = (player) => {
+  const { bowling } = player;
+  const {
+    economy: {
+      above9,
+      below2_5,
+      between8To9,
+      between2_5to3_5,
+      between3_5to4_5,
+      between7To8,
+    },
+  } = odiGrading;
+  if (bowling) {
+    const overs = bowling['O'];
+    if (overs >= 4) {
+      //only applies if bowled atleast 4 overs
+      const economy = bowling['Econ'];
+      player.economy = economy;
+      let score = player.score || 0;
+      if (economy <= 2.5) score += below2_5;
+      else if (economy <= 3.5) score += between2_5to3_5;
+      else if (economy <= 4.5) score += between3_5to4_5;
+      else if (economy <= 8) score += between7To8;
+      else if (economy <= 9) score += between8To9;
+      else score += above9;
+      player.score = score;
+    }
+  }
+  return player;
+};
+
+const calculateEconomyScore = (player) =>
+  player.type === 'ODI'
+    ? calculateODIEconomyScore(player)
+    : calculateT20EconomyScore(player);
+
 const calculateStrikeRateScore = (player) => {
+  const { batting, type } = player;
   const {
     strikeRate: {
       above140,
@@ -137,8 +178,8 @@ const calculateStrikeRateScore = (player) => {
       between50To60,
       between60To70,
     },
-  } = grading;
-  const { batting } = player;
+  } = getGrading(type);
+
   if (batting) {
     const ballsFaced = batting['B'];
     if (ballsFaced >= 10) {
@@ -163,8 +204,11 @@ const calculateCaptainsScore = (player) => {
   return player;
 };
 
-
-export const initialState = { title: 'Fantasy Cricket', user: null };
+export const initialState = {
+  title: 'Fantasy Cricket',
+  user: null,
+  isCreateRoomOpen: false,
+};
 
 export const reducer = (state, action) => {
   switch (action.type) {
@@ -172,7 +216,9 @@ export const reducer = (state, action) => {
       return { ...state, title: action.title };
     case 'user':
       return { ...state, user: action.user };
+    case 'toggleCreateRoom':
+      return { ...state, isCreateRoomOpen: !state.isCreateRoomOpen };
     default:
       return state;
   }
-}
+};

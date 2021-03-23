@@ -29,6 +29,7 @@ const FantasyScore = () => {
 
   if (!state) return <Redirect to="/" noThrow />;
   const { score, playing11 } = state;
+  console.log(state);
   const players = calculateScores(score, playing11);
   return (
     <>

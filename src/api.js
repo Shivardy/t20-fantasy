@@ -34,6 +34,13 @@ export const fetchMatchData = async () => {
   return data;
 };
 
+
+export const createRoom = async (formData) => {
+  const roomRef = await firestore.collection('rooms').add(formData);
+  const roomDoc = await roomRef.get();
+  return { id: roomDoc.id, ...roomDoc.data() };
+}
+
 const fetchFantasySummary = async (matchId) => {
   const response = await fetch(
     `https://cricapi.com/api/fantasySummary?apikey=${process.env.REACT_APP_API_KEY}&unique_id=${matchId}`

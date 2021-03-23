@@ -1,5 +1,7 @@
 import {
+  Backdrop,
   Button,
+  CircularProgress,
   Paper,
   Tab,
   Table,
@@ -21,15 +23,23 @@ const MatchView = () => {
     state: { user },
   } = useContext(Context);
 
-  const { status, data } = useQuery('fetchMatchData', fetchMatchData);
+  const { data, isError, isLoading } = useQuery(
+    'fetchMatchData',
+    fetchMatchData
+  );
   const [matchType, setMatchType] = useState(0);
   const matchTypes = ['Twenty20', 'ODI', ''];
 
   const handleChange = (event, newValue) => setMatchType(newValue);
-  
 
-  if (status === 'loading') return <div>Loading..</div>;
-  if (status === 'error') return <div>Error..</div>;
+  if (isLoading)
+    return (
+      <Backdrop open>
+        <CircularProgress />
+      </Backdrop>
+    );
+  if (isError) return <div>Error..</div>;
+
   const matches = data.matches
     .filter(({ squad }) => squad)
     .filter(({ type }) => !['Tests', 'First-class'].includes(type))

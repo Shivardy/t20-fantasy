@@ -9,6 +9,7 @@ import MatchView from './MatchView';
 import MenuBar from './MenuBar';
 import PickPlayers from './PickPlayers';
 import { ProtectedRoute } from './ProtectedRoute';
+import Room from './Room';
 
 export const Context = createContext();
 
@@ -28,19 +29,18 @@ function App() {
     return unSubscribe;
   }, []);
 
-  const { user } = state;
-  console.log(user);
   return (
     <QueryClientProvider client={queryClient}>
       <Context.Provider value={contextValue}>
-        <Container maxWidth="lg">
-          <MenuBar />
-          <Box m={1}>
-            <BrowserRouter>
+        <BrowserRouter>
+          <Container maxWidth="lg">
+            <MenuBar />
+            <Box m={1}>
               <Switch>
                 <Route path="/" exact component={MatchView} />
                 <ProtectedRoute path="/match/:id" component={PickPlayers} />
                 <ProtectedRoute path="/score" component={FantasyScore} />
+                <ProtectedRoute path="/room/:id" component={Room} />
                 <Route
                   render={() => {
                     window.location.replace('/');
@@ -48,9 +48,9 @@ function App() {
                   }}
                 />
               </Switch>
-            </BrowserRouter>
-          </Box>
-        </Container>
+            </Box>
+          </Container>
+        </BrowserRouter>
       </Context.Provider>
     </QueryClientProvider>
   );

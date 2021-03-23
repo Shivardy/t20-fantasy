@@ -2726,7 +2726,7 @@ export const matches = {
   "creditsLeft": 230
 }
 
-export const grading = {
+export const t20grading = {
   batting: {
     run: 1,
     four: 1,
@@ -2755,6 +2755,44 @@ export const grading = {
     above11: -3,
   },
   strikeRate: { //only applies if faced atleast 10 bowls
+    below50: -3,
+    between50To60: -2,
+    between60To70: -1,
+    between100To120: 1,
+    between120To140: 2,
+    above140: 3,
+  }
+}
+
+export const odiGrading = {
+  batting: {
+    run: 1,
+    four: 1,
+    six: 2,
+    halfCentury: 4,
+    century: 8,
+    duckOut: -2
+  },
+  bowling: {
+    wicket: 10,
+    fourWicket: 4,
+    fiveWicket: 8,
+    maiden: 4
+  },
+  fielding: {
+    catches: 4,
+    stumping: 6,
+    runOut: 4
+  },
+  economy: { //only applies if bowled atleast 4 overs
+    below2_5: 3,
+    between2_5to3_5: 2,
+    between3_5to4_5: 1,
+    between7To8: -1,
+    between8To9: -2,
+    above9: -3,
+  },
+  strikeRate: { //only applies if faced atleast 20 bowls
     below50: -3,
     between50To60: -2,
     between60To70: -1,
